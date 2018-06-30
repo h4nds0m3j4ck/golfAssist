@@ -32,7 +32,16 @@
 </head>
 
 <body>
-    <div id="firebaseui-auth-container"></div>
+    <script>
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                //Show the page
+            } else {
+                //Redirect to other page
+                $(location).attr("href","redirect.html");  
+            }
+        });
+    </script>
 </body>
 
 </html>
