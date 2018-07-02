@@ -29,6 +29,18 @@
     <script src="assets/javascript/functions.js"> </script>
 </head>
 
+<script>
+    var config = {
+        apiKey: "AIzaSyCzlDqCG0H9P4les0AZdidvJZPqRg0boew",
+        authDomain: "golfassist-cc729.firebaseapp.com",
+        databaseURL: "https://golfassist-cc729.firebaseio.com",
+        projectId: "golfassist-cc729",
+        storageBucket: "golfassist-cc729.appspot.com",
+        messagingSenderId: "352272717648"
+    };
+    firebase.initializeApp(config);
+</script>
+
 <body>
     <!--CHECK THE USER IS LOG IN, IF NOT REDIRECT-->
     <script>
@@ -37,7 +49,7 @@
                 //Show the page
             } else {
                 //Redirect to other page
-                $(location).attr("href","templates/403.html");  
+                $(location).attr("href", "templates/403.html");
             }
         });
     </script>
@@ -88,7 +100,7 @@
         </div>
         <div class="row mx-auto pb-3 pt-3 border rounded" id="tee">
             <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"  value="Blue Tee">
+                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" value="Blue Tee">
                 <label class="custom-control-label" for="customRadioInline1">Blue Tee</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
