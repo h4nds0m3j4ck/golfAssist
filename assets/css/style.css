@@ -3,3 +3,34 @@
     margin-bottom: 25px;
     padding: 20px;
 }
+#map-selection{
+    min-height: 470px;
+    height: auto;
+}
+#weather{
+    min-height: 200px;
+    height: auto;
+}
+#fly-over{
+    min-height: 200px;
+    height: auto;
+}
+.shots {
+    display: block !important; 
+    padding: 0 !important; 
+    margin: 0 !important;
+    border: 0 !important;
+    width: 21px !important; 
+    border-radius: 0 !important; 
+    line-height: 1 !important;
+}
+.custom-radio{
+    display: block;
+    margin: auto;
+}
+#firebaseui-auth-container{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}

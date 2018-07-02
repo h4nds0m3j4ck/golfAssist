@@ -22,9 +22,7 @@
         crossorigin="anonymous">
 
     <!--FIREBASE IMPORTS-->
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
 
     <!--CUSTOM IMPORTS-->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -32,31 +30,50 @@
 </head>
 
 <body>
+    <!--CHECK THE USER IS LOG IN, IF NOT REDIRECT-->
     <script>
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 //Show the page
             } else {
                 //Redirect to other page
-                //$(location).attr("href","redirect.html");  
+                $(location).attr("href","templates/403.html");  
             }
         });
     </script>
-    <div class="container-fluid">
+    <!--NAVBAR-->
+    <nav class="navbar navbar-dark bg-dark mb-5">
+        <div class="row text-white">
+            <h2>GOLF ASSIST</h2>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    </div>
+        <div class="collapse navbar-collapse" id="navbarsExample01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <div class="nav-link" style="cursor: pointer" id="other-golf-course">Other golf course</div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" style="cursor: pointer" id="see-history">See my Games</div>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-    <!--HISTORICAL DATA-->
+    <!--SELECT GOLF COURSE-->
     <div class="container border rounded" id="selection-card">
-        <div class="row">
-            <div class="col-9">
+        <div class="row pl-3 pr-3">
+            <div class="col-md-9 col-sm-12 bg-success" id="map-selection">
 
             </div>
-            <div class="col-3">
-                <div id="weather">
+            <div class="col-md-3 col-sm-12 pl-4">
+                <div class="bg-primary mb-3" id="weather">
 
                 </div>
-                <div id="fly-over">
+                <div class="bg-danger mb-3" id="fly-over">
 
                 </div>
                 <button class="btn btn-large btn-primary float-right" id="select-btn">SELECT</button>
@@ -65,18 +82,144 @@
     </div>
 
     <!--SCORE CARD-->
-    <div class="container border rounded" id="score-card">
-        <div class="row">
-            <span id="player-name"></span>
-            <span id="current-date"></span>
+    <div class="container border rounded" id="score-card" style="display: none">
+        <div class="row mb-3">
+            <h5 id="player-name" class="pl-4 float-left col-6">John Doe</h5>
         </div>
-        <div class="row"></div>
+        <div class="row mx-auto pb-3 pt-3 border rounded" id="tee">
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"  value="Blue Tee">
+                <label class="custom-control-label" for="customRadioInline1">Blue Tee</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input" value="Yellow Tee">
+                <label class="custom-control-label" for="customRadioInline2">Yellow Tee</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input" value="Black Tee">
+                <label class="custom-control-label" for="customRadioInline3">Black Tee</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline4" name="customRadioInline1" class="custom-control-input" value="White Tee">
+                <label class="custom-control-label" for="customRadioInline4">White Tee</label>
+            </div>
+        </div>
+        <div class="row" id="score-card-table" style="display: none">
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>H1</th>
+                            <th>H2</th>
+                            <th>H3</th>
+                            <th>H4</th>
+                            <th>H5</th>
+                            <th>H6</th>
+                            <th>H7</th>
+                            <th>H8</th>
+                            <th>H9</th>
+                            <th>H10</th>
+                            <th>H11</th>
+                            <th>H12</th>
+                            <th>H13</th>
+                            <th>H14</th>
+                            <th>H15</th>
+                            <th>H16</th>
+                            <th>H17</th>
+                            <th>H18</th>
+                            <th>FINAL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr class="bg-primary">
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>
+                                <input class="shots" value="0" id="example-number-input">
+                            </td>
+                            <td>18</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <button class="btn btn-large btn-primary float-right mt-5" id="complete-btn" style="display: none">FINISH</button>
+        <button class="btn btn-large btn-danger float-left mt-5" id="change-tee-btn" style="display: none">CHANGE TEE</button>
     </div>
 
     <!--HISTORICAL DATA -->
-    <div class="container border rounded" id="historical-card">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Dashboard</h1>
+    <div class="container border rounded" id="historical-card" style="display: none">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+            <h1 class="h2">Welcome ....!</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group mr-2">
                     <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -88,9 +231,7 @@
                 </button>
             </div>
         </div>
-        
-        <h2>Section title</h2>
-        <div class="table-responsive">
+        <div class="table-responsive" id="historical-data-table">
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
@@ -115,6 +256,47 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!--INFORMATION MODAL-->
+    <div class="modal" tabindex="-1" role="dialog" aria-hidden="true" id="infoModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title-info">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-text-info">Modal text.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--DECISION MODAL-->
+    <div class="modal" tabindex="-1" role="dialog" id="decision-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title-decision">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-text-decision">Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-primary" id="ok-btn">OK</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>
