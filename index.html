@@ -21,28 +21,30 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
         crossorigin="anonymous">
 
-    <!--FIREBASE IMPORTS-->
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
-
     <!--CUSTOM IMPORTS-->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script src="assets/javascript/functions.js"> </script>
 </head>
 
+<!-- FIREBASE CREDENTIALS -->
+<script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
 <script>
-    var config = {
+  // Initialize Firebase
+  var config = {
     apiKey: "AIzaSyCzlDqCG0H9P4les0AZdidvJZPqRg0boew",
     authDomain: "golfassist-cc729.firebaseapp.com",
     databaseURL: "https://golfassist-cc729.firebaseio.com",
     projectId: "golfassist-cc729",
     storageBucket: "golfassist-cc729.appspot.com",
     messagingSenderId: "352272717648"
-};
-firebase.initializeApp(config);
+  };
+  firebase.initializeApp(config);
 </script>
-<script>
+
+<!-- FIREBASE UI -->
+<script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+<script type="text/javascript">
     // FirebaseUI config.
     var uiConfig = {
         signInSuccessUrl: 'main.html', //<url-to-redirect-to-on-success>
@@ -56,7 +58,6 @@ firebase.initializeApp(config);
         // Terms of service url.
         tosUrl: '<your-tos-url>'
     };
-
     // Initialize the FirebaseUI Widget using Firebase.
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     // The start method will wait until the DOM is loaded.
