@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Golf Assist</title>
-    
+
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
 
@@ -23,12 +23,6 @@
     <!--FONTAWESOME IMPORTS-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
         crossorigin="anonymous">
-
-    <!--CUSTOM IMPORTS-->
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <script src="assets/javascript/functions.js"> </script>
-
-    
 </head>
 
 <!-- FIREBASE CREDENTIALS -->
@@ -45,13 +39,34 @@
     firebase.initializeApp(config);
 </script>
 
+<!--CUSTOM IMPORTS-->
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+<script src="assets/javascript/functions.js"> </script>
+
 <body>
     <script>
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
+                localStorage.setItem('user_id', user.uid);
+                localStorage.setItem('user_name', user.displayName);
             } else {
+                localStorage.setItem('user_id', '000001');
+                localStorage.setItem('user_name', 'John Doe');
                 console.log('No user signed in');
             }
+
+            //check if the user exist on the database
+            var databaseRef = firebase.database();
+            databaseRef.ref("/users").child(localStorage.getItem('user_id')).once('value', function (snapshot) {
+                if (snapshot.exists()) {
+                    //Do nothing
+                } else {
+                    console.log('/users/' + localStorage.getItem('user_id'));
+                    databaseRef.ref('/users').child(localStorage.getItem('user_id')).set({
+                        games: ['']
+                    });
+                }
+            });
         });
     </script>
 
@@ -68,7 +83,7 @@
         <div class="collapse navbar-collapse" id="navbarsExample01">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <div class="nav-link" style="cursor: pointer" id="other-golf-course">Other golf course</div>
+                    <div class="nav-link" style="cursor: pointer" id="other-golf-course">Select golf course</div>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link" style="cursor: pointer" id="see-history">See my Games</div>
@@ -98,118 +113,13 @@
     <!--SCORE CARD-->
     <div class="container border rounded" id="score-card" style="display: none">
         <div class="row mb-3">
-            <h5 id="player-name" class="pl-4 float-left col-6">John Doe</h5>
+            <h5 id="player-name" class="pl-4 float-left col-6">None</h5>
         </div>
         <div class="row mx-auto pb-3 pt-3 border rounded" id="tee">
-            
+
         </div>
         <div class="row" id="score-card-table" style="display: none">
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>H1</th>
-                            <th>H2</th>
-                            <th>H3</th>
-                            <th>H4</th>
-                            <th>H5</th>
-                            <th>H6</th>
-                            <th>H7</th>
-                            <th>H8</th>
-                            <th>H9</th>
-                            <th>H10</th>
-                            <th>H11</th>
-                            <th>H12</th>
-                            <th>H13</th>
-                            <th>H14</th>
-                            <th>H15</th>
-                            <th>H16</th>
-                            <th>H17</th>
-                            <th>H18</th>
-                            <th>FINAL</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <tr class="bg-primary">
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>18</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
         </div>
         <button class="btn btn-large btn-primary float-right mt-5" id="complete-btn" style="display: none">FINISH</button>
         <button class="btn btn-large btn-danger float-left mt-5" id="change-tee-btn" style="display: none">CHANGE TEE</button>
@@ -218,7 +128,7 @@
     <!--HISTORICAL DATA -->
     <div class="container border rounded" id="historical-card" style="display: none">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
-            <h1 class="h2">Welcome ....!</h1>
+            <h1 class="h2" id="player">Welcome ....!</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group mr-2">
                     <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -238,21 +148,10 @@
                         <th>Location</th>
                         <th>Tee</th>
                         <th>Score</th>
+                        <th>Completed</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    <tr>
-                        <td>01/01/1900</td>
-                        <td>Somewhere</td>
-                        <td>Blue</td>
-                        <td>71/100</td>
-                    </tr>
-                    <tr>
-                        <td>01/01/2000</td>
-                        <td>Else</td>
-                        <td>White</td>
-                        <td>90/71</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
