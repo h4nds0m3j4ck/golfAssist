@@ -1,4 +1,17 @@
 //---------------------------------------------------------------------------------------//
+//------------------------------- FIREBASE AUTHENTICATION -------------------------------//
+//---------------------------------------------------------------------------------------//
+var config = {
+    apiKey: "AIzaSyCzlDqCG0H9P4les0AZdidvJZPqRg0boew",
+    authDomain: "golfassist-cc729.firebaseapp.com",
+    databaseURL: "https://golfassist-cc729.firebaseio.com",
+    projectId: "golfassist-cc729",
+    storageBucket: "golfassist-cc729.appspot.com",
+    messagingSenderId: "352272717648"
+};
+firebase.initializeApp(config);
+
+//---------------------------------------------------------------------------------------//
 //----------------------------       GLOBAL VARIABLES       -----------------------------//
 //---------------------------------------------------------------------------------------//
 

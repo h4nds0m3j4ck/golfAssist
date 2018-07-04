@@ -21,36 +21,26 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
         crossorigin="anonymous">
 
+    <!--FIREBASE IMPORTS-->
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+
     <!--CUSTOM IMPORTS-->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script src="assets/javascript/functions.js"> </script>
 </head>
 
-<!-- FIREBASE CREDENTIALS -->
-<script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
-<script>
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyCzlDqCG0H9P4les0AZdidvJZPqRg0boew",
-        authDomain: "golfassist-cc729.firebaseapp.com",
-        databaseURL: "https://golfassist-cc729.firebaseio.com",
-        projectId: "golfassist-cc729",
-        storageBucket: "golfassist-cc729.appspot.com",
-        messagingSenderId: "352272717648"
-    };
-    firebase.initializeApp(config);
-</script>
-
 <body>
+    <!--CHECK THE USER IS LOG IN, IF NOT REDIRECT-->
     <script>
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
+                //Show the page
             } else {
-                console.log('No user signed in');
+                //Redirect to other page
+                $(location).attr("href","templates/403.html");  
             }
         });
     </script>
-
     <!--NAVBAR-->
     <nav class="navbar navbar-dark bg-dark mb-5">
         <div class="row text-white">
@@ -98,7 +88,7 @@
         </div>
         <div class="row mx-auto pb-3 pt-3 border rounded" id="tee">
             <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" value="Blue Tee">
+                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"  value="Blue Tee">
                 <label class="custom-control-label" for="customRadioInline1">Blue Tee</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
