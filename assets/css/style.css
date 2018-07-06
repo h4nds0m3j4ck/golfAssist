@@ -20,7 +20,7 @@
     padding: 0 !important; 
     margin: 0 !important;
     border: 0 !important;
-    width: 21px !important; 
+    width: 25px !important; 
     border-radius: 0 !important; 
     line-height: 1 !important;
 }
@@ -33,4 +33,10 @@
     top: 50%;
     left:50%;
     transform: translate(-50%,-50%);
+}
+.d-box {
+    width:300px;
+    display:block;
+    clear:both;
+    text-align:left;
 }

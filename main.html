@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Golf Assist</title>
 
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+
     <!--BOOTSTRAP IMPORTS-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
@@ -21,13 +24,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
         crossorigin="anonymous">
 
-    <!--CUSTOM IMPORTS-->
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <script src="assets/javascript/functions.js"> </script>
+    <!--GOOGLE MAPS-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwWJ3x4yHZL0PY1mER6Qiy8xskQmAymIE&callback=initMap" async
+        defer></script>
 </head>
 
 <!-- FIREBASE CREDENTIALS -->
-<script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
 <script>
     // Initialize Firebase
     var config = {
@@ -41,13 +43,34 @@
     firebase.initializeApp(config);
 </script>
 
+<!--CUSTOM IMPORTS-->
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+<script src="assets/javascript/functions.js"> </script>
+
 <body>
     <script>
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
+                localStorage.setItem('user_id', user.uid);
+                localStorage.setItem('user_name', user.displayName);
             } else {
+                localStorage.setItem('user_id', '000001');
+                localStorage.setItem('user_name', 'John Doe');
                 console.log('No user signed in');
             }
+
+            //check if the user exist on the database
+            var databaseRef = firebase.database();
+            databaseRef.ref("/users").child(localStorage.getItem('user_id')).once('value', function (snapshot) {
+                if (snapshot.exists()) {
+                    //Do nothing
+                } else {
+                    console.log('/users/' + localStorage.getItem('user_id'));
+                    databaseRef.ref('/users').child(localStorage.getItem('user_id')).set({
+                        games: ['']
+                    });
+                }
+            });
         });
     </script>
 
@@ -64,7 +87,7 @@
         <div class="collapse navbar-collapse" id="navbarsExample01">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <div class="nav-link" style="cursor: pointer" id="other-golf-course">Other golf course</div>
+                    <div class="nav-link" style="cursor: pointer" id="other-golf-course">Select golf course</div>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link" style="cursor: pointer" id="see-history">See my Games</div>
@@ -74,14 +97,19 @@
     </nav>
 
     <!--SELECT GOLF COURSE-->
-    <div class="container border rounded" id="selection-card">
+    <div class="container border rounded bg-white" id="selection-card">
         <div class="row pl-3 pr-3">
             <div class="col-md-9 col-sm-12 bg-success" id="map-selection">
 
             </div>
             <div class="col-md-3 col-sm-12 pl-4">
                 <div class="bg-primary mb-3" id="weather">
+                    <a class="weatherwidget-io" href="https://forecast7.com/en/25d76n80d19/miami/?unit=us" data-label_1="MIAMI" data-label_2="WEATHER"
+                        data-font="Noto Serif" data-icons="Climacons Animated" data-mode="Current" data-days="3" data-theme="weather_one">MIAMI WEATHER</a>
 
+                    <script>
+                        !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
+                    </script>
                 </div>
                 <div class="bg-danger mb-3" id="fly-over">
 
@@ -92,144 +120,24 @@
     </div>
 
     <!--SCORE CARD-->
-    <div class="container border rounded" id="score-card" style="display: none">
+    <div class="container border rounded bg-white" id="score-card" style="display: none">
         <div class="row mb-3">
-            <h5 id="player-name" class="pl-4 float-left col-6">John Doe</h5>
+            <h5 id="player-name" class="pl-4 float-left col-6">None</h5>
         </div>
         <div class="row mx-auto pb-3 pt-3 border rounded" id="tee">
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" value="Blue Tee">
-                <label class="custom-control-label" for="customRadioInline1">Blue Tee</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input" value="Yellow Tee">
-                <label class="custom-control-label" for="customRadioInline2">Yellow Tee</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input" value="Black Tee">
-                <label class="custom-control-label" for="customRadioInline3">Black Tee</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline4" name="customRadioInline1" class="custom-control-input" value="White Tee">
-                <label class="custom-control-label" for="customRadioInline4">White Tee</label>
-            </div>
+
         </div>
         <div class="row" id="score-card-table" style="display: none">
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>H1</th>
-                            <th>H2</th>
-                            <th>H3</th>
-                            <th>H4</th>
-                            <th>H5</th>
-                            <th>H6</th>
-                            <th>H7</th>
-                            <th>H8</th>
-                            <th>H9</th>
-                            <th>H10</th>
-                            <th>H11</th>
-                            <th>H12</th>
-                            <th>H13</th>
-                            <th>H14</th>
-                            <th>H15</th>
-                            <th>H16</th>
-                            <th>H17</th>
-                            <th>H18</th>
-                            <th>FINAL</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <tr class="bg-primary">
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>
-                                <input class="shots" value="0" id="example-number-input">
-                            </td>
-                            <td>18</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
         </div>
         <button class="btn btn-large btn-primary float-right mt-5" id="complete-btn" style="display: none">FINISH</button>
         <button class="btn btn-large btn-danger float-left mt-5" id="change-tee-btn" style="display: none">CHANGE TEE</button>
     </div>
 
     <!--HISTORICAL DATA -->
-    <div class="container border rounded" id="historical-card" style="display: none">
+    <div class="container border rounded bg-white" id="historical-card" style="display: none">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
-            <h1 class="h2">Welcome ....!</h1>
+            <h1 class="h2" id="player">Welcome ....!</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group mr-2">
                     <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -249,21 +157,10 @@
                         <th>Location</th>
                         <th>Tee</th>
                         <th>Score</th>
+                        <th>Completed</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    <tr>
-                        <td>01/01/1900</td>
-                        <td>Somewhere</td>
-                        <td>Blue</td>
-                        <td>71/100</td>
-                    </tr>
-                    <tr>
-                        <td>01/01/2000</td>
-                        <td>Else</td>
-                        <td>White</td>
-                        <td>90/71</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
