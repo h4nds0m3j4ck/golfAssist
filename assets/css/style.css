@@ -34,3 +34,9 @@
     left:50%;
     transform: translate(-50%,-50%);
 }
+.d-box {
+    width:300px;
+    display:block;
+    clear:both;
+    text-align:left;
+}

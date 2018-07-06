@@ -23,6 +23,10 @@
     <!--FONTAWESOME IMPORTS-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
         crossorigin="anonymous">
+
+    <!--GOOGLE MAPS-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwWJ3x4yHZL0PY1mER6Qiy8xskQmAymIE&callback=initMap" async
+        defer></script>
 </head>
 
 <!-- FIREBASE CREDENTIALS -->
@@ -93,14 +97,19 @@
     </nav>
 
     <!--SELECT GOLF COURSE-->
-    <div class="container border rounded" id="selection-card">
+    <div class="container border rounded bg-white" id="selection-card">
         <div class="row pl-3 pr-3">
             <div class="col-md-9 col-sm-12 bg-success" id="map-selection">
 
             </div>
             <div class="col-md-3 col-sm-12 pl-4">
                 <div class="bg-primary mb-3" id="weather">
+                    <a class="weatherwidget-io" href="https://forecast7.com/en/25d76n80d19/miami/?unit=us" data-label_1="MIAMI" data-label_2="WEATHER"
+                        data-font="Noto Serif" data-icons="Climacons Animated" data-mode="Current" data-days="3" data-theme="weather_one">MIAMI WEATHER</a>
 
+                    <script>
+                        !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
+                    </script>
                 </div>
                 <div class="bg-danger mb-3" id="fly-over">
 
@@ -111,7 +120,7 @@
     </div>
 
     <!--SCORE CARD-->
-    <div class="container border rounded" id="score-card" style="display: none">
+    <div class="container border rounded bg-white" id="score-card" style="display: none">
         <div class="row mb-3">
             <h5 id="player-name" class="pl-4 float-left col-6">None</h5>
         </div>
@@ -126,7 +135,7 @@
     </div>
 
     <!--HISTORICAL DATA -->
-    <div class="container border rounded" id="historical-card" style="display: none">
+    <div class="container border rounded bg-white" id="historical-card" style="display: none">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
             <h1 class="h2" id="player">Welcome ....!</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
