@@ -9,9 +9,6 @@ var selectedGolfCourse = 'none';
 var currentTee = '';
 var map = null;
 var prev_infowindow = false;
-//---------------------------------------------------------------------------------------//
-//-------------------------------         FIREBASE        -------------------------------//
-//---------------------------------------------------------------------------------------//
 
 
 //---------------------------------------------------------------------------------------//
@@ -19,6 +16,8 @@ var prev_infowindow = false;
 //---------------------------------------------------------------------------------------//
 
 $(document).ready(function () {
+    showGames();
+
     $('#select-btn').on('click', function () {
         //Validate user entry
         if (selectedGolfCourse !== 'none') {
@@ -111,38 +110,26 @@ $(document).ready(function () {
     });
 });
 
-
-databaseRef.ref("/users").child(localStorage.getItem('user_id')).child('games').on("child_added", function (snap) {
-    //Populate table
-    var tempRow = snap.val();
-    var trTag = $('<tr>');
-
-    var tdDateTag = $('<td>');
-    var tdLocationTag = $('<td>');
-    var tdTeeTag = $('<td>');
-    var tdScoreTag = $('<td>');
-    var tdCompletedTag = $('<td>');
-
-    tdDateTag.text(tempRow.date);
-    tdLocationTag.text(tempRow.location);
-    tdTeeTag.text(tempRow.tee);
-    tdScoreTag.text(tempRow.score);
-    tdCompletedTag.text(tempRow.completed ? 'YES' : 'NO');
-
-    trTag.append(tdDateTag);
-    trTag.append(tdLocationTag);
-    trTag.append(tdTeeTag);
-    trTag.append(tdScoreTag);
-    trTag.append(tdCompletedTag);
-
-    $('#table-body').append(trTag);
-})
-
 //---------------------------------------------------------------------------------------//
 //-------------------------------       WEATHER API       -------------------------------//
 //---------------------------------------------------------------------------------------//
 
-
+function renderWeather(city_id) {
+    if ($('#weather').children()) {
+        $('#weather').children().remove();
+    }
+    console.log(city_id);
+    window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];
+    window.myWidgetParam.push({ id: 12, cityid: city_id, appid: '0722e157fffaac88706730b4c7ab6eb6', units: 'metric', containerid: 'weather', });
+    (function () {
+        var script = document.createElement('script');
+        script.async = true;
+        script.charset = "utf-8";
+        script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(script, s);
+    })();
+}
 
 
 //---------------------------------------------------------------------------------------//
@@ -172,16 +159,18 @@ function initMap() {
             name: 'Briar Bay',
             address: '9399 SW 134th Street',
             city: 'Miami',
+            city_id: '4164138',
             zip: '33176',
             phone: '(305)-235-6667',
             desc: 'Briar Bay Golf Course is a par-31 Executive Golf Course, built on thirty acres, eight blocks west of US 1, north of SW 136th Street. Designed by Bruce Devlin and Robert Von Hagge, and built in 1974 by Real Estate Developer Alec Courtelis, it opened for play in January of 1975. The Parks Department acquired Briar Bay in 1979 and has operated it since that time. The course ambles west, north, east, west, south and finally east again as it winds its way back to the clubhouse.'
         }, {
-            position: { lat: 25.9442872, lng: -80.3204381 },
+            position: { lat: 25.943137, lng: -80.313405 },
             type: 'golf', //COUNTRY CLUB EAST
             URLPath: 'https://golfccmiami.com/',
             name: 'Country Club East',
             address: '6801 NW 186th Street',
             city: 'Hialeah',
+            city_id: '4158476',
             zip: '33015',
             phone: '(305)-829-8456',
             desc: 'The Country Club of Miami East Course, a 6,353-yard par-70 layout with a slope of 124, requires shot placement and strategy from both the novice and serious golfer.'
@@ -192,6 +181,7 @@ function initMap() {
             name: 'Country Club West',
             address: '6801 NW 186th Street',
             city: 'Hialeah',
+            city_id: '4158476',
             zip: '33015',
             phone: '(305)-829-8456',
             desc: 'The Country Club of Miami West Course, a 7,017-yard par-72 course with a slope of 132, hosted the 1991 Senior PGA Tour National Qualifying School. The bunkers, lush fairways, and rolling greens offer a challenging adventure. The course was the original site for the former National Airlines Open.'
@@ -204,6 +194,7 @@ function initMap() {
             address: '6700 Crandon Boulevard',
             city: 'Key Biscayne',
             zip: '33149',
+            city_id: '4160789',
             phone: '(305)-361-9129',
             desc: 'Crandon Golf at Key Biscayne is a championship 18-hole golf course located on the island paradise of Key Biscayne, just 10 minutes from downtown Miami. It is the perfect alternative to civilization where you can spend a day enveloped by the tropics.'
         }, {
@@ -213,6 +204,7 @@ function initMap() {
             name: 'Greynolds Park',
             address: '17530 West Dixie Highway',
             city: 'North Miami Beach',
+            city_id: '4166233',
             zip: '33160',
             phone: '(305)-949-1741',
             desc: "Greynolds Golf Course provides a 3,100-yard challenging layout. This par-36 course, designed by Mark Mahannah in 1964, is one of the county's most popular nine-hole designs for all levels of play."
@@ -221,9 +213,10 @@ function initMap() {
             type: 'golf', //PALMETTO
             URLPath: 'http://golfpalmetto.com/',
             name: 'Palmetto',
-            address: 'Some',
-            city: 'some',
-            zip: 'some',
+            address: '9300 SW 152nd Street',
+            city: 'Miami',
+            zip: '33157',
+            city_id: '4164138',
             phone: '(305)-238-2922',
             desc: "Palmetto Golf Course is a Par-70 Championship Miami course, built on 121 acres, running parallel to US-1, south of SW 152nd Street. The 18-hole course, designed by Dick Wilson and built in 1959 by developers Porter, Russell and Wagor, was purchased by Miami-Dade County in 1967."
         }
@@ -238,7 +231,9 @@ function initMap() {
             icon: { url: icons[feature.type].icon, scaledSize: new google.maps.Size(30, 30) },
             map: map,
             content: feature.desc,
-            name: 'briar_bay',
+            name: feature.name,
+            title: feature.name,
+            city_id: feature.city_id,
             animation: google.maps.Animation.DROP
         });
 
@@ -256,6 +251,8 @@ function initMap() {
             infowindow.open(map, marker);
 
             selectedGolfCourse = marker.name.toLowerCase().replace(' ', '_');
+
+            renderWeather(marker.city_id);
         });
 
     });
@@ -286,12 +283,6 @@ function customInfo(feature) {
     return infoHTML;
 }
 
-
-//---------------------------------------------------------------------------------------//
-//-------------------------------       YOUTUBE API       -------------------------------//
-//---------------------------------------------------------------------------------------//
-
-
 //---------------------------------------------------------------------------------------//
 //-------------------------------     FIREBASE STORAGE    -------------------------------//
 //---------------------------------------------------------------------------------------//
@@ -309,13 +300,30 @@ function saveCurrentGame() {
 }
 
 function saveToDB(flag) {
-    databaseRef.ref('/users/' + localStorage.getItem('user_id') + '/games').push().set({
-        date: (new Date()).toLocaleDateString("en-US"),
-        location: currentGolfCourse.name,
-        tee: currentTee,
-        score: getFinalScore(),
-        completed: flag
+    //check if the user exist on the database
+    var databaseRef = firebase.database();
+    databaseRef.ref("/users").child(localStorage.getItem('user_id')).once('value', function (snapshot) {
+        if (snapshot.exists()) {
+            databaseRef.ref('/users/' + localStorage.getItem('user_id') + '/games').push().set({
+                date: (new Date()).toLocaleDateString("en-US"),
+                location: currentGolfCourse.name,
+                tee: currentTee,
+                score: getFinalScore(),
+                completed: flag
+            });
+        } else {
+            databaseRef.ref('/users').child(localStorage.getItem('user_id')).set({
+                games: [{
+                    date: (new Date()).toLocaleDateString("en-US"),
+                    location: currentGolfCourse.name,
+                    tee: currentTee,
+                    score: getFinalScore(),
+                    completed: flag
+                }]
+            });
+        }
     });
+
 }
 
 function validateGameInput() {
@@ -370,6 +378,42 @@ function getTotalShots(start) {
         total += currentShots[index];
     }
     return total;
+}
+
+function showGames(){
+
+    if (databaseRef.ref("/users").child(localStorage.getItem('user_id')).child('games')) {
+        databaseRef.ref("/users").child(localStorage.getItem('user_id')).child('games').on("child_added", function (snap) {
+            console.log('Hello World!');
+            //Populate table
+            var tempRow = snap.val();
+            var trTag = $('<tr>');
+        
+            var tdDateTag = $('<td>');
+            var tdLocationTag = $('<td>');
+            var tdTeeTag = $('<td>');
+            var tdScoreTag = $('<td>');
+            var tdCompletedTag = $('<td>');
+        
+            tdDateTag.text(tempRow.date);
+            tdLocationTag.text(tempRow.location);
+            tdTeeTag.text(tempRow.tee);
+            tdScoreTag.text(tempRow.score);
+            tdCompletedTag.text(tempRow.completed ? 'YES' : 'NO');
+        
+            trTag.append(tdDateTag);
+            trTag.append(tdLocationTag);
+            trTag.append(tdTeeTag);
+            trTag.append(tdScoreTag);
+            trTag.append(tdCompletedTag);
+        
+            $('#table-body').append(trTag);
+        });
+    } else {
+        //No game to show
+    }
+
+    
 }
 //---------------------------------------------------------------------------------------//
 //-------------------------------       SCORE CARD       --------------------------------//
@@ -508,7 +552,7 @@ function getCoreTable(start, tee, final) {
     //Add last column
     trHolesTag.append($('<th class ="text-center">' + ((start === 0) && (!final) ? 'FRONT' : 'TOTAL') + '/YARDS/PAR</th>'));
     tryardsTag.append($('<th class ="text-center">' + getTotalYards(tee, start, final) + '</th>'));
-    trInputTag.append($('<th class ="text-center" id = "' + ((start === 0) && (!final) ? 'first9' : 'second9') + '">0</th>'));
+    trInputTag.append($('<th class ="text-center" id = "' + ((start === 0) ? 'first9' : 'second9') + '">0</th>'));
     trParTag.append($('<th class ="text-center">' + getTotalPar(start, final) + '</th>'));
 
     //Create table

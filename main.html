@@ -56,21 +56,8 @@
             } else {
                 localStorage.setItem('user_id', '000001');
                 localStorage.setItem('user_name', 'John Doe');
-                console.log('No user signed in');
+                $(location).attr("href","templates/403.html");
             }
-
-            //check if the user exist on the database
-            var databaseRef = firebase.database();
-            databaseRef.ref("/users").child(localStorage.getItem('user_id')).once('value', function (snapshot) {
-                if (snapshot.exists()) {
-                    //Do nothing
-                } else {
-                    console.log('/users/' + localStorage.getItem('user_id'));
-                    databaseRef.ref('/users').child(localStorage.getItem('user_id')).set({
-                        games: ['']
-                    });
-                }
-            });
         });
     </script>
 
@@ -99,19 +86,15 @@
     <!--SELECT GOLF COURSE-->
     <div class="container border rounded bg-white" id="selection-card">
         <div class="row pl-3 pr-3">
-            <div class="col-md-9 col-sm-12 bg-success" id="map-selection">
+            <div class="col-md-9 col-sm-12" id="map-selection">
 
             </div>
             <div class="col-md-3 col-sm-12 pl-4">
-                <div class="bg-primary mb-3" id="weather">
-                    <a class="weatherwidget-io" href="https://forecast7.com/en/25d76n80d19/miami/?unit=us" data-label_1="MIAMI" data-label_2="WEATHER"
-                        data-font="Noto Serif" data-icons="Climacons Animated" data-mode="Current" data-days="3" data-theme="weather_one">MIAMI WEATHER</a>
-
-                    <script>
-                        !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
-                    </script>
+                <!--WEATHER-->
+                <div class="mb-3" id="weather">
                 </div>
-                <div class="bg-danger mb-3" id="fly-over">
+                <!--FLY-OVER (FUTURE)-->
+                <div class="mb-3" id="fly-over">
 
                 </div>
                 <button class="btn btn-large btn-primary float-right" id="select-btn">SELECT</button>
@@ -143,10 +126,6 @@
                     <button class="btn btn-sm btn-outline-secondary">Share</button>
                     <button class="btn btn-sm btn-outline-secondary">Export</button>
                 </div>
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                    <span data-feather="calendar"></span>
-                    This week
-                </button>
             </div>
         </div>
         <div class="table-responsive" id="historical-data-table">
