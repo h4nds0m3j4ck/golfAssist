@@ -16,6 +16,7 @@ var prev_infowindow = false;
 //---------------------------------------------------------------------------------------//
 
 $(document).ready(function () {
+    //POpulate Data Table
     showGames();
 
     $('#select-btn').on('click', function () {
@@ -77,6 +78,8 @@ $(document).ready(function () {
     $('#see-history').on('click', function () {
         showHistoricalCard();
         $('.collapse').collapse('hide');
+        //Create Data Table
+        $('#history-table').DataTable();
     });
 
     $(document).on('click', '.custom-control-input', function () {
@@ -380,7 +383,7 @@ function getTotalShots(start) {
     return total;
 }
 
-function showGames(){
+function showGames() {
 
     if (databaseRef.ref("/users").child(localStorage.getItem('user_id')).child('games')) {
         databaseRef.ref("/users").child(localStorage.getItem('user_id')).child('games').on("child_added", function (snap) {
@@ -388,32 +391,32 @@ function showGames(){
             //Populate table
             var tempRow = snap.val();
             var trTag = $('<tr>');
-        
+
             var tdDateTag = $('<td>');
             var tdLocationTag = $('<td>');
             var tdTeeTag = $('<td>');
             var tdScoreTag = $('<td>');
             var tdCompletedTag = $('<td>');
-        
+
             tdDateTag.text(tempRow.date);
             tdLocationTag.text(tempRow.location);
             tdTeeTag.text(tempRow.tee);
             tdScoreTag.text(tempRow.score);
             tdCompletedTag.text(tempRow.completed ? 'YES' : 'NO');
-        
+
             trTag.append(tdDateTag);
             trTag.append(tdLocationTag);
             trTag.append(tdTeeTag);
             trTag.append(tdScoreTag);
             trTag.append(tdCompletedTag);
-        
+
             $('#table-body').append(trTag);
         });
     } else {
         //No game to show
     }
 
-    
+
 }
 //---------------------------------------------------------------------------------------//
 //-------------------------------       SCORE CARD       --------------------------------//
