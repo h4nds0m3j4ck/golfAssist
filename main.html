@@ -56,7 +56,7 @@
             } else {
                 localStorage.setItem('user_id', '000001');
                 localStorage.setItem('user_name', 'John Doe');
-                $(location).attr("href","templates/403.html");
+                //$(location).attr("href", "templates/403.html");
             }
         });
     </script>
@@ -121,28 +121,20 @@
     <div class="container border rounded bg-white" id="historical-card" style="display: none">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
             <h1 class="h2" id="player">Welcome ....!</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group mr-2">
-                    <button class="btn btn-sm btn-outline-secondary">Share</button>
-                    <button class="btn btn-sm btn-outline-secondary">Export</button>
-                </div>
-            </div>
         </div>
-        <div class="table-responsive" id="historical-data-table">
-            <table class="table table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Location</th>
-                        <th>Tee</th>
-                        <th>Score</th>
-                        <th>Completed</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                </tbody>
-            </table>
-        </div>
+        <table class="table table-striped table-sm" id="history-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Tee</th>
+                    <th>Score</th>
+                    <th>Completed</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
     </div>
 
     <!--INFORMATION MODAL-->
@@ -185,6 +177,12 @@
             </div>
         </div>
     </div>
+
+     <!--DATA TABLE-->
+     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>   
+     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 </body>
 
 </html>
